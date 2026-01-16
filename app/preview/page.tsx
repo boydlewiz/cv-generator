@@ -1,0 +1,162 @@
+"use client"
+
+import { useCV } from "@/lib/cv-context"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { ArrowLeft, Download, Save } from "lucide-react"
+import Link from "next/link"
+import { ModernTemplate } from "@/components/templates/modern-template"
+import { ClassicTemplate } from "@/components/templates/classic-template"
+import { CreativeTemplate } from "@/components/templates/creative-template"
+import { ExecutiveTemplate } from "@/components/templates/executive-template"
+import { useRouter } from "next/navigation"
+import { useToast } from "@/hooks/use-toast"
+
+export default function PreviewPage() {
+  const { cvData, updateCVData } = useCV()
+  const router = useRouter()
+  const { toast } = useToast()
+
+  const templates = [
+    { id: "modern", name: "Modern", component: ModernTemplate },
+    { id: "classic", name: "Classic", component: ClassicTemplate },
+    { id: "creative", name: "Creative", component: CreativeTemplate },
+    { id: "executive", name: "Executive", component: ExecutiveTemplate },
+  ] as const
+
+  const CurrentTemplate = templates.find((t) => t.id === cvData.template)?.component || ModernTemplate
+
+  const handleDownload = () => {
+    if (typeof window !== "undefined") {
+      window.print()
+      toast({
+        title: "Print Dialog Opened",
+        description: "Select 'Save as PDF' as your printer to download your CV",
+      })
+    }
+  }
+
+  const handleSave = () => {
+    router.push("/saved-cvs")
+    toast({
+      title: "CV Saved",
+      description: "Your CV has been saved successfully",
+    })
+  }
+
+  return (
+    <div className="min-h-screen bg-[#1a1f2e]">
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-6 print:hidden">
+          <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
+            <Button
+              variant="outline"
+              asChild
+              className="border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white bg-transparent"
+            >
+              <Link href="/builder">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Editor
+              </Link>
+            </Button>
+            <div className="flex gap-2">
+              <Button
+                size="lg"
+                variant="outline"
+                onClick={handleSave}
+                className="gap-2 border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white bg-transparent"
+              >
+                <Save className="h-5 w-5" />
+                Save CV
+              </Button>
+              <Button
+                size="lg"
+                onClick={handleDownload}
+                className="gap-2 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white border-0"
+              >
+                <Download className="h-5 w-5" />
+                Download PDF
+              </Button>
+            </div>
+          </div>
+          <h1 className="text-3xl font-bold mb-2 text-white">Preview Your CV</h1>
+          <p className="text-gray-400">Choose a template and download your professional CV</p>
+        </div>
+
+        <div className="mb-6 print:hidden">
+          <div className="flex gap-2 flex-wrap">
+            {templates.map((template) => (
+              <Button
+                key={template.id}
+                variant={cvData.template === template.id ? "default" : "outline"}
+                onClick={() => updateCVData({ template: template.id })}
+                className={
+                  cvData.template === template.id
+                    ? "bg-primary hover:bg-primary/90 text-white border-0"
+                    : "border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white"
+                }
+              >
+                {template.name}
+              </Button>
+            ))}
+          </div>
+        </div>
+
+        <Card className="max-w-[210mm] mx-auto overflow-hidden print:shadow-none print:border-0 print:max-w-none print:mx-0 bg-white border-gray-700">
+          <CardContent className="p-0 print:p-0">
+            <CurrentTemplate data={cvData} />
+          </CardContent>
+        </Card>
+      </div>
+
+      <style jsx global>{`
+        @media print {
+          html, body {
+            background: white !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            print-color-adjust: exact;
+            -webkit-print-color-adjust: exact;
+          }
+          
+          body > div {
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+          
+          .container {
+            max-width: 100% !important;
+            width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+          }
+          
+          /* Hide all navigation and buttons */
+          button, nav, .print\\:hidden {
+            display: none !important;
+          }
+          
+          /* Ensure proper page sizing */
+          @page {
+            margin: 0 !important;
+            size: A4 portrait !important;
+          }
+          
+          /* Remove card styling in print and ensure full width */
+          [class*="max-w-\\[210mm\\]"],
+          [class*="Card"],
+          [class*="card"] {
+            max-width: 100% !important;
+            width: 100% !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            box-shadow: none !important;
+            border: none !important;
+            padding: 0 !important;
+          }
+        }
+      `}</style>
+    </div>
+  )
+}
