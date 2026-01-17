@@ -74,12 +74,12 @@ export function ClassicTemplate({ data }: { data: CVData }) {
         {/* Work Experience */}
         {data.workExperience.length > 0 && (
           <div className="mb-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-2 uppercase border-b border-gray-300 pb-1">
+            <h2 className="text-lg font-bold text-gray-900 mb-2 uppercase border-b border-gray-300 pb-1 print:break-after-avoid">
               Work Experience
             </h2>
             <div className="space-y-4">
               {data.workExperience.map((work) => (
-                <div key={work.id}>
+                <div key={work.id} className="print:break-inside-avoid">
                   <div className="flex justify-between items-start mb-1">
                     <div>
                       <h3 className="font-bold text-gray-900">{work.jobTitle}</h3>
@@ -110,10 +110,10 @@ export function ClassicTemplate({ data }: { data: CVData }) {
         {/* Education */}
         {data.education.length > 0 && (
           <div className="mb-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-2 uppercase border-b border-gray-300 pb-1">Education</h2>
+            <h2 className="text-lg font-bold text-gray-900 mb-2 uppercase border-b border-gray-300 pb-1 print:break-after-avoid">Education</h2>
             <div className="space-y-4">
               {data.education.map((edu) => (
-                <div key={edu.id}>
+                <div key={edu.id} className="print:break-inside-avoid">
                   <div className="flex justify-between items-start mb-1">
                     <div>
                       <h3 className="font-bold text-gray-900">{edu.degree}</h3>
@@ -136,10 +136,10 @@ export function ClassicTemplate({ data }: { data: CVData }) {
         <div className="grid grid-cols-2 gap-6 mb-6">
           {data.skills.length > 0 && (
             <div>
-              <h2 className="text-lg font-bold text-gray-900 mb-2 uppercase border-b border-gray-300 pb-1">Skills</h2>
+              <h2 className="text-lg font-bold text-gray-900 mb-2 uppercase border-b border-gray-300 pb-1 print:break-after-avoid">Skills</h2>
               <ul className="list-disc ml-5 text-sm text-gray-800 space-y-1">
                 {data.skills.map((skill) => (
-                  <li key={skill.id}>
+                  <li key={skill.id} className="print:break-inside-avoid">
                     {skill.name} ({skill.level})
                   </li>
                 ))}
@@ -149,12 +149,12 @@ export function ClassicTemplate({ data }: { data: CVData }) {
 
           {data.languages.length > 0 && (
             <div>
-              <h2 className="text-lg font-bold text-gray-900 mb-2 uppercase border-b border-gray-300 pb-1">
+              <h2 className="text-lg font-bold text-gray-900 mb-2 uppercase border-b border-gray-300 pb-1 print:break-after-avoid">
                 Languages
               </h2>
               <ul className="list-disc ml-5 text-sm text-gray-800 space-y-1">
                 {data.languages.map((lang) => (
-                  <li key={lang.id}>
+                  <li key={lang.id} className="print:break-inside-avoid">
                     {lang.name} ({lang.proficiency})
                   </li>
                 ))}
@@ -166,10 +166,10 @@ export function ClassicTemplate({ data }: { data: CVData }) {
         {/* References */}
         {data.references.length > 0 && (
           <div>
-            <h2 className="text-lg font-bold text-gray-900 mb-2 uppercase border-b border-gray-300 pb-1">References</h2>
+            <h2 className="text-lg font-bold text-gray-900 mb-2 uppercase border-b border-gray-300 pb-1 print:break-after-avoid">References</h2>
             <div className="grid grid-cols-2 gap-4">
               {data.references.map((ref) => (
-                <div key={ref.id} className="text-sm">
+                <div key={ref.id} className="text-sm print:break-inside-avoid">
                   <p className="font-bold text-gray-900">{ref.name}</p>
                   <p className="text-gray-800">{ref.position}</p>
                   <p className="text-gray-800">{ref.company}</p>
