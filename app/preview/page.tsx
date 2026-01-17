@@ -3,7 +3,9 @@
 import { useCV } from "@/lib/cv-context"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { ArrowLeft, Download, Save } from "lucide-react"
+import { ArrowLeft, Download, Save, FileText } from "lucide-react"
+import html2pdf from "html2pdf.js"
+import htmlDocx from "html-docx-js/dist/html-docx"
 import Link from "next/link"
 import { ModernTemplate } from "@/components/templates/modern-template"
 import { ClassicTemplate } from "@/components/templates/classic-template"
@@ -32,6 +34,47 @@ export default function PreviewPage() {
       toast({
         title: "Print Dialog Opened",
         description: "Select 'Save as PDF' as your printer to download your CV",
+      })
+    }
+  }
+
+  // PDF Export using html2pdf.js
+  const handleExportPDF = () => {
+    const element = document.getElementById("cv-preview")
+    if (element) {
+      html2pdf()
+        .set({
+          margin: 0,
+          filename: "cv.pdf",
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        })
+        .from(element)
+        .save()
+      toast({
+        title: "PDF Download Started",
+        description: "Your CV is being downloaded as a PDF.",
+      })
+    }
+  }
+
+  // Word Export using html-docx-js
+  const handleExportWord = () => {
+    const element = document.getElementById("cv-preview")
+    if (element) {
+      const html = element.outerHTML
+      const converted = htmlDocx.asBlob(html)
+      const url = URL.createObjectURL(converted)
+      const a = document.createElement("a")
+      a.href = url
+      a.download = "cv.docx"
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+      toast({
+        title: "Word Download Started",
+        description: "Your CV is being downloaded as a Word document.",
       })
     }
   }
@@ -71,11 +114,19 @@ export default function PreviewPage() {
               </Button>
               <Button
                 size="lg"
-                onClick={handleDownload}
+                onClick={handleExportPDF}
                 className="gap-2 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white border-0"
               >
                 <Download className="h-5 w-5" />
                 Download PDF
+              </Button>
+              <Button
+                size="lg"
+                onClick={handleExportWord}
+                className="gap-2 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white border-0"
+              >
+                <FileText className="h-5 w-5" />
+                Download Word
               </Button>
             </div>
           </div>
@@ -102,7 +153,7 @@ export default function PreviewPage() {
           </div>
         </div>
 
-        <Card className="max-w-[210mm] mx-auto overflow-hidden print:shadow-none print:border-0 print:max-w-none print:mx-0 bg-white border-gray-700">
+        <Card className="max-w-[210mm] mx-auto overflow-hidden print:shadow-none print:border-0 print:max-w-none print:mx-0 bg-white border-gray-700" id="cv-preview">
           <CardContent className="p-0 print:p-0">
             <CurrentTemplate data={cvData} />
           </CardContent>
