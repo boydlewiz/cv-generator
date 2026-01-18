@@ -48,6 +48,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Google AdSense Verification Script */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-260767763470654"
+          crossOrigin="anonymous"
+        ></script>
+      </head>
       <body className={`font-sans antialiased`}>
         <CVProvider>{children}</CVProvider>
         <Toaster />
