@@ -163,32 +163,38 @@ export default function PreviewPage() {
       <style jsx global>{`
         @media print {
           html, body {
-            background: white !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            width: 100% !important;
-            print-color-adjust: exact;
-            -webkit-print-color-adjust: exact;
-          }
-          
-          body > div {
-            margin: 0 !important;
-            padding: 0 !important;
-          }
-          
-          .container {
-            max-width: 100% !important;
-            width: 100% !important;
-            padding: 0 !important;
-            margin: 0 !important;
-          }
-          
-          /* Hide all navigation and buttons */
-          button, nav, .print\\:hidden {
-            display: none !important;
-          }
-          
-          /* Ensure proper page sizing */
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      onClick={handleSave}
+                      className="gap-2 border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white bg-transparent"
+                    >
+                      <Save className="h-5 w-5" />
+                      Save CV
+                    </Button>
+                    <div className="relative">
+                      <Button
+                        size="lg"
+                        onClick={handleExport}
+                        className="gap-2 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white border-0"
+                      >
+                        <Download className="h-5 w-5" />
+                        Export as {exportFormat === 'pdf' ? 'PDF' : 'Word'}
+                      </Button>
+                      <div className="absolute top-full left-0 mt-2 z-10">
+                        <div className="flex flex-col bg-white border rounded shadow">
+                          <button
+                            className={`px-4 py-2 text-left ${exportFormat === 'pdf' ? 'bg-gray-200' : ''}`}
+                            onClick={() => setExportFormat('pdf')}
+                          >PDF</button>
+                          <button
+                            className={`px-4 py-2 text-left ${exportFormat === 'word' ? 'bg-gray-200' : ''}`}
+                            onClick={() => setExportFormat('word')}
+                          >Word</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
           @page {
             margin: 0 !important;
             size: A4 portrait !important;
